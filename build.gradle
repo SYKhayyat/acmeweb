@@ -1,13 +1,13 @@
 plugins {
     id "java"
-    id 'org.springframework.boot' version '3.2.3'
+    id 'org.springframework.boot' version '4.0.0'
 }
 
 apply plugin: 'io.spring.dependency-management'
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
 }
 
@@ -17,7 +17,8 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")    // web communication
-    implementation('org.springframework.boot:spring-boot-starter-test')   // unit tests that work with MVC
+    implementation('org.springframework.boot:spring-boot-starter-test')   // unit tests
+    implementation('org.springframework.boot:spring-boot-starter-webmvc-test') // MVC unit tests
 }
 
 test {
