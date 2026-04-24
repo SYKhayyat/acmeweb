@@ -21,7 +21,7 @@ public class JREVersionDecorator implements I_ServerDetails {
     @Override
     public String getStatusDesc() {
         String base =  thingIAmWrapping.getStatusDesc();
-        String added = ", and the JRE version is 15.0.2+7-27";
+        String added = ", and the JRE version is " + System.getProperty("java.version");
         return base + added;
     }
 

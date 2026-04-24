@@ -21,7 +21,7 @@ public class TempLocationDecorator implements I_ServerDetails {
     @Override
     public String getStatusDesc() {
         String base =  thingIAmWrapping.getStatusDesc();
-        String added = ", and the server's temp file location is M:\\\\AppData\\\\Local\\\\Temp";
+        String added = ", and the server's temp file location is " + System.getenv("TEMP");
         return base + added;
     }
 

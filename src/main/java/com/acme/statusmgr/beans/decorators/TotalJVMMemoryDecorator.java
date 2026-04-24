@@ -21,7 +21,7 @@ public class TotalJVMMemoryDecorator implements I_ServerDetails {
     @Override
     public String getStatusDesc() {
         String base =  thingIAmWrapping.getStatusDesc();
-        String added = ", and there is a total of 159383552 bytes of JVM memory";
+        String added = ", and there is a total of " + Runtime.getRuntime().totalMemory() + " bytes of JVM memory" ;
         return base + added;
     }
 

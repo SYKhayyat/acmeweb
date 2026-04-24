@@ -21,7 +21,7 @@ public class AvailableProcessorsDecorator implements I_ServerDetails {
     @Override
     public String getStatusDesc() {
         String base =  thingIAmWrapping.getStatusDesc();
-        String added = ", and there are 4 processors available";
+        String added = ", and there are " + Runtime.getRuntime().availableProcessors() + " processors available";
         return base + added;
     }
 
