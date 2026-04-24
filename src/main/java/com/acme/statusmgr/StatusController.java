@@ -1,13 +1,18 @@
 package com.acme.statusmgr;
 
+import com.acme.statusmgr.beans.I_ServerDetails;
 import com.acme.statusmgr.beans.ServerStatus;
+import com.acme.statusmgr.beans.decorators.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -55,20 +60,49 @@ public class StatusController {
      *      * @apiNote TODO since Spring picks apart the object returned with Reflection and doesn't care what the return-object's type is, we can change the type of object we return if necessary
      */
     @RequestMapping("/status/detailed")
-    public ServerStatus getDetailedStatus(
+    public I_ServerDetails getDetailedStatus(
             @RequestParam(value = "name", defaultValue = "Anonymous") String name,
-            @RequestParam List<String> details) {
+            @RequestParam(required = false) List<String> details ) {
 
-        ServerStatus detailedStatus = null;
+        I_ServerDetails current = new ServerStatus(counter.incrementAndGet(), String.format(template, name));
 
         if (details != null) {
             Logger logger = LoggerFactory.getLogger("StatusController");
             logger.info("Details were provided: " + Arrays.toString(details.toArray()));
 
-            //todo Should do something with all these details that were requested
+            HashSet<String> acceptableDetails = new HashSet<>();
+            acceptableDetails.add("availableProcessors");
+            acceptableDetails.add("freeJVMMemory");
+            acceptableDetails.add("totalJVMMemory");
+            acceptableDetails.add("jreVersion");
+            acceptableDetails.add("tempLocation");
 
-
+            for(String s: details){
+                if (! acceptableDetails.contains(s)){
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid details option: " + s);
+                }
+                switch (s){
+                    case "availableProcessors":
+                        current = new AvailableProcessorsDecorator(current);
+                        break;
+                    case "freeJVMMemory":
+                        current = new FreeJVMMemoryDecorator(current);
+                        break;
+                    case "totalJVMMemory":
+                        current = new TotalJVMMemoryDecorator(current);
+                        break;
+                    case "jreVersion":
+                        current = new JREVersionDecorator(current);
+                        break;
+                    case "tempLocation":
+                        current = new TempLocationDecorator(current);
+                        break;
+                }
+            }
         }
-        return detailedStatus; //todo shouldn't just return null
+        else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Required request parameter 'details' for method parameter type List is not present");
+        }
+        return current;
     }
 }
