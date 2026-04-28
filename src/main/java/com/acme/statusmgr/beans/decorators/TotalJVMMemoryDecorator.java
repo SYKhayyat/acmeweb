@@ -1,21 +1,23 @@
 package com.acme.statusmgr.beans.decorators;
 
+import com.acme.statusmgr.beans.BaseServerStatus;
 import com.acme.statusmgr.beans.I_ServerDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class is a decorator class of the base ServerStatus class, implementing I_ServerDetails.
+ * This class is a decorator class of the base ServerStatus class,
+ * extending BaseServerStatus, and thus implementing I_ServerDetails.
  * It adds in the details of total JVM memory, and calculates a new cost.
  */
-public class TotalJVMMemoryDecorator implements I_ServerDetails {
+public class TotalJVMMemoryDecorator extends BaseServerStatus {
     private final Integer requestCost = 13;
     private I_ServerDetails thingIAmWrapping;
     private static final Logger logger = LoggerFactory.getLogger(TotalJVMMemoryDecorator.class);
     public TotalJVMMemoryDecorator(I_ServerDetails thingIAmWrapping) {
+        super(0, null); // These are dummy values that will not be used.
         this.thingIAmWrapping = thingIAmWrapping;
         logger.info("Applying decorator: totalJVMMemory, cost=" + requestCost);
-
     }
     @Override
     public long getId() {
@@ -28,12 +30,14 @@ public class TotalJVMMemoryDecorator implements I_ServerDetails {
     }
     /**
      * A decorator method, adding details functionality.
+     * It calculates the amount of processors by delegating calls to a SystemInfo object,
+     * which has real and fake implementations.
      * @return the detailed server status string.
      */
     @Override
     public String getStatusDesc() {
         String base =  thingIAmWrapping.getStatusDesc();
-        long totalMemory = Runtime.getRuntime().totalMemory();
+        long totalMemory = getProvider().getTotalJVMMemory();
         logger.info("Recomputed totalJVMMemory: {} memory", totalMemory);
         String added = ", and there is a total of " + totalMemory + " bytes of JVM memory" ;
         return base + added;

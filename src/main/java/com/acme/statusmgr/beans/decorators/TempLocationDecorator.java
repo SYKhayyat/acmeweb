@@ -1,18 +1,21 @@
 package com.acme.statusmgr.beans.decorators;
 
+import com.acme.statusmgr.beans.BaseServerStatus;
 import com.acme.statusmgr.beans.I_ServerDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class is a decorator class of the base ServerStatus class, implementing I_ServerDetails.
+ * This class is a decorator class of the base ServerStatus class,
+ * extending BaseServerStatus, and thus implementing I_ServerDetails.
  * It adds in the details of location of temp file, and calculates a new cost.
  */
-public class TempLocationDecorator implements I_ServerDetails {
+public class TempLocationDecorator extends BaseServerStatus {
     private final Integer requestCost = 29;
     private I_ServerDetails thingIAmWrapping;
     private static final Logger logger = LoggerFactory.getLogger(TempLocationDecorator.class);
     public TempLocationDecorator(I_ServerDetails thingIAmWrapping) {
+        super(0, null); // These are dummy values that will not be used.
         this.thingIAmWrapping = thingIAmWrapping;
         logger.info("Applying decorator: tempLocation, cost=" + requestCost);
 
@@ -28,12 +31,14 @@ public class TempLocationDecorator implements I_ServerDetails {
     }
     /**
      * A decorator method, adding details functionality.
+     * It calculates the amount of processors by delegating calls to a SystemInfo object,
+     * which has real and fake implementations.
      * @return the detailed server status string.
      */
     @Override
     public String getStatusDesc() {
         String base =  thingIAmWrapping.getStatusDesc();
-        String location = System.getenv("TEMP");
+        String location = getProvider().getTempLocation();
         logger.info("Recomputed tempLocation: {} tempLocation", location);
         String added = ", and the server's temp file location is " + location;
         return base + added;

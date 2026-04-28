@@ -5,9 +5,7 @@ import com.acme.servermgr.ServerManager;
 /**
  * A POJO that represents Server Status and can be returned to Spring as the result of a request.
  */
-public class ServerStatus implements I_ServerDetails {
-    private long id;                // Unique identifier of request, sequential number
-    private String contentHeader;   // Some info about the request
+public class ServerStatus extends BaseServerStatus {
     /**
      * requestCost constant will have to be changed if we change costs or calc dynamically
      */
@@ -21,30 +19,7 @@ public class ServerStatus implements I_ServerDetails {
      * @param contentHeader info about the request
      */
     public ServerStatus(long id, String contentHeader) {
-        this.id = id;
-        this.contentHeader = contentHeader;
-    }
-
-    public ServerStatus() {
-
-    }
-
-    /**
-     * get the id of this request
-     *
-     * @return a numeric id that increases during life of server for each request .
-     */
-    public long getId() {
-        return id;
-    }
-
-    /**
-     * Get the content header that was specified by the request
-     *
-     * @return some string
-     */
-    public String getContentHeader() {
-        return contentHeader;
+        super(id, contentHeader);
     }
 
     /**
