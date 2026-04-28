@@ -42,7 +42,7 @@ Details can then be requested. There are five details:
 Example URL:
 http://localhost:8080/server/status/detailed?name=Yankel&details=availableProcessors,freeJVMMemory,totalJVMMemory
 
-**As of now, these implementations return dummy values, to get all the tests working.**
+These implementations are fully functional. They do ont use cached values; they recompute the values on each call.
 
 **--> Syntax for URLS:**
 *    All start with /server

@@ -32,7 +32,9 @@ public class FreeJVMMemoryDecorator implements I_ServerDetails {
     @Override
     public String getStatusDesc() {
         String base =  thingIAmWrapping.getStatusDesc();
-        String added = ", and there are 127268272 bytes of JVM memory free" ;
+        long freeMemory = Runtime.getRuntime().freeMemory();
+        logger.info("Recomputed freeJVMMemory: {} memory", freeMemory);
+        String added = ", and there are " + freeMemory + " bytes of JVM memory free" ;
         return base + added;
     }
     /**
