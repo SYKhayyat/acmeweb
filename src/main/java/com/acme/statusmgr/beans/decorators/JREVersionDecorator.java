@@ -11,13 +11,12 @@ import org.slf4j.LoggerFactory;
  * It adds in the details of Java version, and calculates a new cost.
  */
 public class JREVersionDecorator extends BaseServerStatus {
-    private final Integer requestCost = 19;
     private I_ServerDetails thingIAmWrapping;
     private static final Logger logger = LoggerFactory.getLogger(JREVersionDecorator.class);
     public JREVersionDecorator(I_ServerDetails thingIAmWrapping) {
         super(0, null); // These are dummy values that will not be used.
         this.thingIAmWrapping = thingIAmWrapping;
-        logger.info("Applying decorator: JREVersion, cost=" + requestCost);
+        logger.info("Applying decorator: JREVersion");
 
     }
     @Override
@@ -49,6 +48,7 @@ public class JREVersionDecorator extends BaseServerStatus {
      */
     @Override
     public Integer getRequestCost() {
-        return requestCost + thingIAmWrapping.getRequestCost();
-    }
+        Integer requestCost = 19;
+        logger.info("Additional Cost:{}", requestCost);
+        return requestCost + thingIAmWrapping.getRequestCost();    }
 }

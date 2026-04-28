@@ -11,13 +11,12 @@ import org.slf4j.LoggerFactory;
  * It adds in the details of total JVM memory, and calculates a new cost.
  */
 public class TotalJVMMemoryDecorator extends BaseServerStatus {
-    private final Integer requestCost = 13;
     private I_ServerDetails thingIAmWrapping;
     private static final Logger logger = LoggerFactory.getLogger(TotalJVMMemoryDecorator.class);
     public TotalJVMMemoryDecorator(I_ServerDetails thingIAmWrapping) {
         super(0, null); // These are dummy values that will not be used.
         this.thingIAmWrapping = thingIAmWrapping;
-        logger.info("Applying decorator: totalJVMMemory, cost=" + requestCost);
+        logger.info("Applying decorator: totalJVMMemory");
     }
     @Override
     public long getId() {
@@ -48,6 +47,7 @@ public class TotalJVMMemoryDecorator extends BaseServerStatus {
      */
     @Override
     public Integer getRequestCost() {
-        return requestCost + thingIAmWrapping.getRequestCost();
-    }
+        Integer requestCost = 13;
+        logger.info("Additional Cost:{}", requestCost);
+        return requestCost + thingIAmWrapping.getRequestCost();    }
 }

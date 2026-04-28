@@ -11,13 +11,12 @@ import org.slf4j.LoggerFactory;
  * It adds in the details of available processors, and calculates a new cost.
  */
 public class AvailableProcessorsDecorator extends BaseServerStatus {
-    private final Integer requestCost = 3;
     private I_ServerDetails thingIAmWrapping;
     private static final Logger logger = LoggerFactory.getLogger(AvailableProcessorsDecorator.class);
     public AvailableProcessorsDecorator(I_ServerDetails thingIAmWrapping) {
         super(0, null); // These are dummy values that will not be used.
         this.thingIAmWrapping = thingIAmWrapping;
-        logger.info("Applying decorator: availableProcessors, cost=" + requestCost);
+        logger.info("Applying decorator: availableProcessors");
     }
     @Override
     public long getId() {
@@ -50,6 +49,8 @@ public class AvailableProcessorsDecorator extends BaseServerStatus {
      */
     @Override
     public Integer getRequestCost() {
+        Integer requestCost = 3;
+        logger.info("Additional Cost:{}", requestCost);
         return requestCost + thingIAmWrapping.getRequestCost();
     }
 }

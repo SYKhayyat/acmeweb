@@ -11,13 +11,12 @@ import org.slf4j.LoggerFactory;
  * It adds in the details of location of temp file, and calculates a new cost.
  */
 public class TempLocationDecorator extends BaseServerStatus {
-    private final Integer requestCost = 29;
     private I_ServerDetails thingIAmWrapping;
     private static final Logger logger = LoggerFactory.getLogger(TempLocationDecorator.class);
     public TempLocationDecorator(I_ServerDetails thingIAmWrapping) {
         super(0, null); // These are dummy values that will not be used.
         this.thingIAmWrapping = thingIAmWrapping;
-        logger.info("Applying decorator: tempLocation, cost=" + requestCost);
+        logger.info("Applying decorator: tempLocation");
 
     }
     @Override
@@ -49,6 +48,7 @@ public class TempLocationDecorator extends BaseServerStatus {
      */
     @Override
     public Integer getRequestCost() {
-        return requestCost + thingIAmWrapping.getRequestCost();
-    }
+        Integer requestCost = 29;
+        logger.info("Additional Cost:{}", requestCost);
+        return requestCost + thingIAmWrapping.getRequestCost();    }
 }
