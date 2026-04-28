@@ -1,6 +1,8 @@
 package com.acme.statusmgr.beans;
 
 import com.acme.statusmgr.facade.I_SystemInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is an abstract class which will hold a system info provider
@@ -11,6 +13,7 @@ public abstract class BaseServerStatus implements I_ServerDetails{
     private long id;                // Unique identifier of request, sequential number
     private String contentHeader;   // Some info about the request
     private static I_SystemInfo provider;
+    private static final Logger logger = LoggerFactory.getLogger(BaseServerStatus.class);
 
     public BaseServerStatus(long id, String contentHeader) {
         this.id = id;
@@ -23,6 +26,7 @@ public abstract class BaseServerStatus implements I_ServerDetails{
      */
     public static void setProvider(I_SystemInfo p){
         provider = p;
+        logger.info("Provider set to: {}", p.getClass().getSimpleName());
     }
 
     /**

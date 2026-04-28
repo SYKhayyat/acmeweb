@@ -50,7 +50,6 @@ public class StatusController {
                 String.format(template, name));
     }
 
-
     /**
      * Process a request for detailed server status information
      *
