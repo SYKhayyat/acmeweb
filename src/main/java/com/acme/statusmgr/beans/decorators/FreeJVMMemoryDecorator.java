@@ -48,7 +48,7 @@ public class FreeJVMMemoryDecorator extends BaseServerStatus {
      */
     @Override
     public Integer getRequestCost() {
-        Integer requestCost = 3;
+        Integer requestCost = 7;
         logger.info("Additional Cost:{}", requestCost);
         return requestCost + thingIAmWrapping.getRequestCost();    }
 }
