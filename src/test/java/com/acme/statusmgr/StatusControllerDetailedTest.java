@@ -29,6 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.acme.statusmgr.beans.BaseServerStatus;
+import com.acme.statusmgr.facade.MockSystemInfo;
+
 /**
  * Tests for the detailed sever status request, with various combinations.
  */
@@ -44,7 +47,7 @@ public class StatusControllerDetailedTest {
      */
     @BeforeAll
     public static void beforeAll() {
-       //todo StatusController.setSystemInfoFacade(null /* todo: Inject appropriate object */);
+       BaseServerStatus.setProvider(new MockSystemInfo());
     }
 
 
